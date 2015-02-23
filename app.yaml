@@ -1,5 +1,5 @@
 application: mech-library
-version: 3
+version: 4
 runtime: go
 api_version: go1
 
@@ -14,4 +14,4 @@ handlers:
   static_dir: img
 
 - url: /.*
-  script: _go_app
+  script: app.go
