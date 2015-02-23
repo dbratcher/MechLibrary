@@ -1,8 +1,9 @@
 package hello
 
 import (
-  "fmt"
   "net/http"
+
+  "html/template"
 
   "appengine"
   "appengine/user"
@@ -11,6 +12,9 @@ import (
 func init() {
   http.HandleFunc("/", handler)
 }
+
+
+var templates = template.Must(template.ParseGlob("templates/*"))
 
 func handler(writer http.ResponseWriter, request *http.Request) {
   context := appengine.NewContext(request)
@@ -25,7 +29,7 @@ func handler(writer http.ResponseWriter, request *http.Request) {
     writer.WriteHeader(http.StatusFound)
     return
   }
-  fmt.Fprintf(writer, "Hello, %v!", currentUser)
-
+  print(currentUser.Email)
+  templates.ExecuteTemplate(writer, "indexPage", currentUser)
 }
 
