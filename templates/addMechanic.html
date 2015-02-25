@@ -2,14 +2,12 @@
 <html>
   <head>
     <title>MechLibrary: Add a Mechanic</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-    <script src="/js/bootstrap.min.js"></script>
+    {{ template "headLibs" }}
   </head>
   <body style="padding-top:50px">
     {{ template  "navbar" }}
     <div class="container">
-      <form action="/mechanics/add" method="post" class="form-horizontal">
+      <form action="{{.}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
         <div class="text-center">
           <h2>New Game Mechanic Form</h2>
         </div>
@@ -25,20 +23,16 @@
             <textarea name="description" rows="3" cols="60" placeholder="Enter Game Mechanic Description"></textarea>
           </div>
         </div>
+        <div class="form-group">
+          <label for="screenshot" class="col-sm-3 control-label">Screenshot:</label>
+          <div class="col-sm-9">
+             <input type="file" name="screenshot">
+          </div>
+        </div>
         <div class='col-sm-offset-3 col-sm-9'>
           <input type="submit" value="Submit Mechanic" class="btn btn-primary">
         </div>
       </form>
-      <br>
-      <br>
-      <hr>
-      <h2>Previously Submitted Mechanic List</h2>
-      {{range .}}
-        <h3>{{.Title}}</h3>
-        {{with .AddedBy}}<b>{{.}}</b>{{else}}An anonymous person{{end}}
-        on <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em>
-        wrote <blockquote>{{.Description}}</blockquote>
-      {{end}}
     </div>
   </body>
 </html>

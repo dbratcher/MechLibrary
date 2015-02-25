@@ -1,25 +1,14 @@
-{{define "indexPage"}}
+{{define "mechanicLatestList"}}
 <html>
   <head>
-    <title>MechLibrary: The Game Mechanic Library</title>
+    <title>MechLibrary: Latest Game Mechanics</title>
     {{ template "headLibs" }}
   </head>
   <body style="padding-top:50px">
     {{ template  "navbar" }}
     <div class="container">
-      <div class="media row">
-        <div class="media-left col-xs-12 col-sm-3" style="padding:30px;">
-          <img src='/img/logo.png' class='center-block' width="200px">
-        </div>
-        <div class="media-right col-xs-12 col-sm-9 text-center" style="padding:8px">
-          <h1>Welcome</h1>
-          <p>The game mechanic library is currently under development. Check back next week for exciting new features.</p>
-          <p>Browse the latest added to the library below, or submit some game mechanics you know of while you wait:</p>
-          <a href="/mechanics/add" class="btn btn-primary">Add Mechanic</a>
-        </div>
-      </div>
-      <div>
-        {{range .}}
+      <h2>Latest Game Mechanics</h2>
+      {{range .}}
           <a href="/mechanics/id?key={{.Id}}" style="color:inherit;text-decoration:none;">
             <div class="media" style="padding:10px">
               <div class="media-left">
@@ -39,12 +28,6 @@
             </div>
           </a>
         {{end}}
-        <div class="text-center">
-          <a href="/mechanics/list/latest">View All</a>
-        </div>
-        <br/>
-        <br/>
-      </div>
     </div>
   </body>
 </html>

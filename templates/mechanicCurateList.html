@@ -1,0 +1,36 @@
+{{define "mechanicCurateList"}}
+<html>
+  <head>
+    <title>MechLibrary: Submitted Game Mechanics</title>
+    {{ template "headLibs" }}
+  </head>
+  <body style="padding-top:50px">
+    {{ template  "navbar" }}
+    <div class="container">
+      <h2>Submitted Mechanic List</h2>
+      {{range .}}
+        <a href="/mechanics/id?key={{.Id}}" style="color:inherit;text-decoration:none;">
+          <div class="media">
+            <div class="media-left" style="height:200;float:left">
+              <img src="{{.ScreenshotURL}}" width="150" height="150">
+            </div>
+            <div class="media-right">
+              <h3>{{.Title}}</h3>
+              {{with .AddedBy}}<b>{{.}}</b>{{else}}An anonymous person{{end}}
+              at <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em>
+              submitted <blockquote>{{.Description}}</blockquote>
+              <div>
+                {{if .Approved}}
+                  Approved
+                {{else}}
+                  <a href="/mechanics/approve?id={{.Id}}" class="btn btn-success">Approve</a>
+                {{end}}
+              </div>
+            </div>
+          </div>
+        </a>
+      {{end}}
+    </div>
+  </body>
+</html>
+{{end}}

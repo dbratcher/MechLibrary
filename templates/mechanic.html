@@ -1,0 +1,31 @@
+{{define "mechanic"}}
+<html>
+  <head>
+    <title>MechLibrary: {{.Title}}</title>
+    {{ template "headLibs" }}
+  </head>
+  <body style="padding-top:70px">
+    {{ template  "navbar" }}
+    <div class="container">
+      <div class="media">
+        <div class="media-left">
+          <img src="{{.ScreenshotURL}}" width="200" height="200">
+        </div>
+        <div class="media-right">
+          <h3>{{.Title}}</h3>
+          {{with .AddedBy}}<b>{{.}}</b>{{else}}An anonymous person{{end}}
+          at <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em>
+          submitted <blockquote>{{.Description}}</blockquote>
+          <div>
+            {{if .Approved}}
+              Approved
+            {{else}}
+              Pending Approval
+            {{end}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{{end}}
