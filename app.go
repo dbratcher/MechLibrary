@@ -57,9 +57,13 @@ func handleIndex(writer http.ResponseWriter, request *http.Request) {
 
   var page IndexPage
   page.SortByTime, _ = latestMechanicQuery(context)
-  page.SortByTime = page.SortByTime[:5]
+  if len(page.SortByTime)>5 {
+    page.SortByTime = page.SortByTime[:5]
+  }
   page.SortByVotes, _ = votesMechanicQuery(context)
-  page.SortByVotes = page.SortByVotes[:5]
+  if len(page.SortByVotes)>5 {
+    page.SortByVotes = page.SortByVotes[:5]
+  }
   templates.ExecuteTemplate(writer, "indexPage", page)
 }
 
