@@ -4,35 +4,37 @@
     <title>MechLibrary: Add a Mechanic</title>
     {{ template "headLibs" }}
   </head>
-  <body style="padding-top:50px">
+  <body style="padding-top:50px;background-color:#9FC6BF">
     {{ template  "navbar" }}
     <div class="container">
-      <form action="{{.}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-        <div class="text-center">
-          <h2>New Game Mechanic Form</h2>
-        </div>
-        <div class="form-group">
-          <label for="title" class="col-sm-3 control-label">Title:</label>
-          <div class="col-sm-9">
-            <input type="text" name="title" placeholder="Enter Title">
+      <div style="background-color:#A7B4CB;margin:5px;border: 2px solid;border-radius: 25px;padding:20px;padding-bottom:100px">
+        <form action="{{.}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+          <div class="text-center">
+            <h2>New Game Mechanic Form</h2>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="description" class="col-sm-3 control-label">Description:</label>
-          <div class="col-sm-9">
-            <textarea name="description" rows="3" cols="60" placeholder="Enter Game Mechanic Description"></textarea>
+          <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">Title:</label>
+            <div class="col-sm-9">
+              <input type="text" name="title" placeholder="Enter Title">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="screenshot" class="col-sm-3 control-label">Screenshot:</label>
-          <div class="col-sm-9">
-             <input type="file" name="screenshot">
+          <div class="form-group">
+            <label for="description" class="col-sm-3 control-label">Description:</label>
+            <div class="col-sm-9">
+              <textarea name="description" rows="3" cols="60" placeholder="Enter Game Mechanic Description"></textarea>
+            </div>
           </div>
-        </div>
-        <div class='col-sm-offset-3 col-sm-9'>
-          <input type="submit" value="Submit Mechanic" class="btn btn-primary">
-        </div>
-      </form>
+          <div class="form-group">
+            <label for="screenshot" class="col-sm-3 control-label">Screenshot:</label>
+            <div class="col-sm-9">
+               <input type="file" name="screenshot">
+            </div>
+          </div>
+          <div class='col-sm-offset-3 col-sm-9'>
+            <input type="submit" value="Submit Mechanic" class="btn btn-primary">
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>

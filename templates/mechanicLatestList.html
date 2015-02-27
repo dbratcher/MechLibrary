@@ -1,32 +1,42 @@
 {{define "mechanicLatestList"}}
 <html>
   <head>
-    <title>MechLibrary: Latest Game Mechanics</title>
+    <title>MechLibrary: Game Mechanics</title>
     {{ template "headLibs" }}
   </head>
-  <body style="padding-top:50px">
+  <body style="padding-top:50px;background-color:#9FC6BF">
     {{ template  "navbar" }}
     <div class="container">
-      <h2>Latest Game Mechanics</h2>
+      <h2>Game Mechanic List</h2>
       {{range .}}
-          <a href="/mechanics/id?key={{.Id}}" style="color:inherit;text-decoration:none;">
-            <div class="media" style="padding:10px">
-              <div class="media-left">
-                {{with .ScreenshotURL}}
-                  <img src="{{.}}" width="150" height="150">
+          <div class="media" style="padding:10px;background-color:#A7B4CB;margin:5px;border: 2px solid;border-radius: 25px;">
+            <div class="media-left">
+               {{with .ScreenshotURL}}
+                  <div style="width:100px;height:100px;border-radius:20px;background: url({{.}});background-size: 100px 100px;box-shadow: 0 0 8px rgba(0, 0, 0, .8);">
+                  </div>
                 {{else}}
-                  <img src="/img/default.png" width="200" height="200">
+                  <img src="/img/default.png" width="100" height="100">
                 {{end}}
 
-              </div>
-              <div class="media-right">
-                <h3>{{.Title}}</h3>
-                {{with .AddedBy}}<b>{{.}}</b>{{else}}An anonymous person{{end}}
-                at <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em>
-                submitted <blockquote>{{.Description}}</blockquote>
-              </div>
             </div>
-          </a>
+            <div class="media-right" style="width:100%">
+              <div class="votes pull-right">
+                Votes:
+                <span id="votes-{{.Id}}">{{.Votes}}</span>
+                <br/>
+                <span id="upvoteLink-{{.Id}}">
+                  <a onclick="upvote({{.Id}})" style="cursor:pointer">Up Vote</a>
+                </span>
+              </div>
+              <h3>{{.Title}}</h3>
+              <div>{{.Description}}</div>
+              Added <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em> - {{.Votes}} Votes
+              <br/>
+              <a href="/mechanics/id?key={{.Id}}">
+                View Full
+              </a>
+            </div>
+          </div>
         {{end}}
     </div>
   </body>

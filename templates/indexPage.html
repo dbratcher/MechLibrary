@@ -4,10 +4,10 @@
     <title>MechLibrary: The Game Mechanic Library</title>
     {{ template "headLibs" }}
   </head>
-  <body style="padding-top:50px">
+  <body style="padding-top:50px;background-color:#9FC6BF">
     {{ template  "navbar" }}
     <div class="container">
-      <div class="media row">
+      <div class="media row" style="padding-bottom:20px">
         <div class="media-left col-xs-12 col-sm-3" style="padding:30px;">
           <img src='/img/logo.png' class='center-block' width="200px">
         </div>
@@ -18,32 +18,67 @@
           <a href="/mechanics/add" class="btn btn-primary">Add Mechanic</a>
         </div>
       </div>
-      <div>
-        {{range .}}
-          <a href="/mechanics/id?key={{.Id}}" style="color:inherit;text-decoration:none;">
-            <div class="media" style="padding:10px">
-              <div class="media-left">
-                {{with .ScreenshotURL}}
-                  <img src="{{.}}" width="150" height="150">
-                {{else}}
-                  <img src="/img/default.png" width="200" height="200">
-                {{end}}
+      <br>
+      <hr>
+      <br>
 
+      <div class="row">
+        <div class="col-sm-6">
+          <h1>Top Voted</h1>
+          {{range .SortByVotes}}
+            <a href="/mechanics/id?key={{.Id}}" style="color:inherit;text-decoration:none;">
+              <div class="media" style="padding:10px;background-color:#A7B4CB;margin:5px;border: 2px solid;border-radius: 25px;">
+                <div class="media-left">
+                  {{with .ScreenshotURL}}
+                    <div style="width:100px;height:100px;border-radius:20px;background: url({{.}});background-size: 100px 100px;box-shadow: 0 0 8px rgba(0, 0, 0, .8);">
+                    </div>
+                  {{else}}
+                    <img src="/img/default.png" width="100" height="100">
+                  {{end}}
+
+                </div>
+                <div class="media-right" style="height:120px">
+                  <h3>{{.Title}}</h3>
+                  <div>{{.Description}}</div>
+                  Added <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em> - {{.Votes}} Votes
+                </div>
               </div>
-              <div class="media-right">
-                <h3>{{.Title}}</h3>
-                {{with .AddedBy}}<b>{{.}}</b>{{else}}An anonymous person{{end}}
-                at <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em>
-                submitted <blockquote>{{.Description}}</blockquote>
-              </div>
-            </div>
-          </a>
-        {{end}}
-        <div class="text-center">
-          <a href="/mechanics/list/latest">View All</a>
+            </a>
+          {{end}}
+          <div class="text-center">
+            <a href="/mechanics/list/votes">View All</a>
+          </div>
+          <br/>
+          <br/>
         </div>
-        <br/>
-        <br/>
+        <div class="col-sm-6 hidden-xs">
+          <h1>Latest</h1>
+          {{range .SortByTime}}
+            <a href="/mechanics/id?key={{.Id}}" style="color:inherit;text-decoration:none;">
+              <div class="media" style="padding:10px;background-color:#A7B4CB;margin:5px;border: 2px solid;border-radius: 25px;">
+                <div class="media-left">
+                  {{with .ScreenshotURL}}
+                    <div style="width:100px;height:100px;border-radius:20px;background: url({{.}});background-size: 100px 100px;box-shadow: 0 0 8px rgba(0, 0, 0, .8);">
+                    </div>
+                  {{else}}
+                    <img src="/img/default.png" width="100" height="100">
+                  {{end}}
+
+                </div>
+                <div class="media-right" style="height:120px">
+                  <h3>{{.Title}}</h3>
+                  <div>{{.Description}}</div>
+                  Added <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em> - {{.Votes}} Votes
+                </div>
+              </div>
+            </a>
+          {{end}}
+          <div class="text-center">
+            <a href="/mechanics/list/latest">View All</a>
+          </div>
+          <br/>
+          <br/>
+        </div>
       </div>
     </div>
   </body>

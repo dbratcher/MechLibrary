@@ -15,3 +15,17 @@ indexes:
   properties:
   - name: AddedTime
     direction: desc
+
+- kind: Mechanic
+  ancestor: yes
+  properties:
+  - name: Approved
+  - name: AddedTime
+    direction: desc
+
+- kind: Mechanic
+  ancestor: yes
+  properties:
+  - name: Approved
+  - name: Votes
+    direction: desc

@@ -4,18 +4,25 @@
     <title>MechLibrary: {{.Title}}</title>
     {{ template "headLibs" }}
   </head>
-  <body style="padding-top:70px">
+  <body style="padding-top:70px;background-color:#9FC6BF">
     {{ template  "navbar" }}
     <div class="container">
-      <div class="media">
-        <div class="media-left">
-          <img src="{{.ScreenshotURL}}" width="200" height="200">
+      <div class="media"  >
+        <div class="media-left" >
+          <div style="width:200px;height:200px;border-radius:5px;background: url({{.ScreenshotURL}});background-size: 200px 200px;box-shadow: 0 0 8px rgba(0, 0, 0, .8);">
         </div>
-        <div class="media-right">
+        <div class="media-right" style="min-width:300px">
+          <div class="votes pull-right">
+                Votes:
+                <span id="votes-{{.Id}}">{{.Votes}}</span>
+                <br/>
+                <span id="upvoteLink-{{.Id}}">
+                  <a onclick="upvote({{.Id}})" style="cursor:pointer">Up Vote</a>
+                </span>
+              </div>
           <h3>{{.Title}}</h3>
-          {{with .AddedBy}}<b>{{.}}</b>{{else}}An anonymous person{{end}}
-          at <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em>
-          submitted <blockquote>{{.Description}}</blockquote>
+          <div>{{.Description}}</div>
+          Added <em>{{.AddedTime.Format "3:04pm, Mon 2 Jan"}}</em>
           <div>
             {{if .Approved}}
               Approved

@@ -20,7 +20,7 @@ type Mechanic struct {
   AddedBy string
   Approved bool
   ScreenshotURL string
-  Votes *datastore.Key
+  Votes int
 }
 
 func listKey(context appengine.Context, book string) *datastore.Key {
@@ -37,26 +37,78 @@ func handleMechanic(writer http.ResponseWriter, request *http.Request) {
     http.Error(writer, err.Error(), http.StatusInternalServerError)
     return
   }
-
+  mech.Votes = fetchMechanicVote(context, key)
   templates.ExecuteTemplate(writer, "mechanic", mech)
 }
 
 func handleVotedMechanics(writer http.ResponseWriter, request *http.Request) {
+  context := appengine.NewContext(request)
+  Increment(context, request.URL.Query().Get("key"))
+}
+
+func fetchMechanicVote(context appengine.Context, key *datastore.Key) (int) {
+  vote, update, _ := Count(context,  strconv.FormatInt(key.IntID(), 10))
+  if update {
+    key := datastore.NewKey(context, "Mechanic", "", key.IntID(), listKey(context, "all_mechanics"))
+    mech := new(Mechanic)
+    if err := datastore.Get(context, key, mech); err != nil {
+      return 0
+    }
+    mech.Votes = vote
+    datastore.Put(context, key, mech)
+  }
+  return vote
+}
+
+func latestMechanicQuery(context appengine.Context) ([]*Mechanic, error) {
+  var mechanicArr []*Mechanic
+  query := datastore.NewQuery("Mechanic").Ancestor(listKey(context, "all_mechanics")).Filter("Approved=", true).Order("-AddedTime")
+  keys, err := query.GetAll(context, &mechanicArr)
+  if err != nil {
+    return nil, err
+  }
+
+  for i := 0; i < len(mechanicArr); i++ {
+    if len(mechanicArr[i].Description) > 69 {
+      mechanicArr[i].Description = mechanicArr[i].Description[:69] + "..."
+    }
+    mechanicArr[i].Id = keys[i].IntID()
+    mechanicArr[i].Votes = fetchMechanicVote(context, keys[i])
+  }
+  return mechanicArr, nil
+}
+
+
+func votesMechanicQuery(context appengine.Context) ([]*Mechanic, error) {
+  var mechanicArr []*Mechanic
+  query := datastore.NewQuery("Mechanic").Ancestor(listKey(context, "all_mechanics")).Filter("Approved=", true).Order("-Votes")
+  keys, err := query.GetAll(context, &mechanicArr)
+  if err != nil {
+    return nil, err
+  }
+
+  for i := 0; i < len(mechanicArr); i++ {
+    if len(mechanicArr[i].Description) > 69 {
+      mechanicArr[i].Description = mechanicArr[i].Description[:69] + "..."
+    }
+    mechanicArr[i].Id = keys[i].IntID()
+    mechanicArr[i].Votes = fetchMechanicVote(context, keys[i])
+  }
+  return mechanicArr, nil
 }
 
 func handleLatestMechanics(writer http.ResponseWriter, request *http.Request) {
   context := appengine.NewContext(request)
-  query := datastore.NewQuery("Mechanic").Ancestor(listKey(context, "approved_mechanics")).Order("-AddedTime")
-  var mechanicArr []*Mechanic
-  keys, err := query.GetAll(context, &mechanicArr)
-  if err != nil {
-    http.Error(writer, err.Error(), http.StatusInternalServerError)
-    return
-  }
 
-  for i := 0; i < len(mechanicArr); i++ {
-    mechanicArr[i].Id = keys[i].IntID()
-  }
+  mechanicArr, _ := latestMechanicQuery(context)
+
+  templates.ExecuteTemplate(writer, "mechanicLatestList", mechanicArr)
+}
+
+func handleVotesMechanics(writer http.ResponseWriter, request *http.Request) {
+  context := appengine.NewContext(request)
+
+  mechanicArr, _ := votesMechanicQuery(context)
 
   templates.ExecuteTemplate(writer, "mechanicLatestList", mechanicArr)
 }
@@ -74,7 +126,7 @@ func handleApproveMechanic(writer http.ResponseWriter, request *http.Request) {
 
   mech.Approved = true
 
-  newKey := datastore.NewKey(context, "Mechanic", "", int64(int_id), listKey(context, "approved_mechanics"))
+  newKey := datastore.NewKey(context, "Mechanic", "", int64(int_id), listKey(context, "all_mechanics"))
 
   datastore.Put(context, key, mech)
   newKey, err := datastore.Put(context, newKey, mech)
@@ -88,7 +140,8 @@ func handleApproveMechanic(writer http.ResponseWriter, request *http.Request) {
 
 func handleCurateMechanics(writer http.ResponseWriter, request *http.Request) {
    context := appengine.NewContext(request)
-   query := datastore.NewQuery("Mechanic").Ancestor(listKey(context, "all_mechanics")).Order("-AddedTime").Limit(10)
+
+   query := datastore.NewQuery("Mechanic").Ancestor(listKey(context, "all_mechanics")).Order("-AddedTime")
   var mechanicArr []*Mechanic
   keys, err := query.GetAll(context, &mechanicArr)
   if err != nil {
@@ -98,6 +151,7 @@ func handleCurateMechanics(writer http.ResponseWriter, request *http.Request) {
 
   for i := 0; i < len(mechanicArr); i++ {
     mechanicArr[i].Id = keys[i].IntID()
+    mechanicArr[i].Votes = fetchMechanicVote(context, keys[i])
   }
 
   templates.ExecuteTemplate(writer, "mechanicCurateList", mechanicArr)
