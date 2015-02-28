@@ -47,16 +47,16 @@ func handleVotedMechanics(writer http.ResponseWriter, request *http.Request) {
 }
 
 func fetchMechanicVote(context appengine.Context, key *datastore.Key) (int) {
-  vote, update, _ := Count(context,  strconv.FormatInt(key.IntID(), 10))
-  if update {
-    key := datastore.NewKey(context, "Mechanic", "", key.IntID(), listKey(context, "all_mechanics"))
+  vote, _, _ := Count(context,  strconv.FormatInt(key.IntID(), 10))
+  //if update {
+    mechKey := datastore.NewKey(context, "Mechanic", "", key.IntID(), listKey(context, "all_mechanics"))
     mech := new(Mechanic)
-    if err := datastore.Get(context, key, mech); err != nil {
+    if err := datastore.Get(context, mechKey, mech); err != nil {
       return 0
     }
     mech.Votes = vote
-    datastore.Put(context, key, mech)
-  }
+    datastore.Put(context, mechKey, mech)
+  //}
   return vote
 }
 
