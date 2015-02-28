@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MechLibrary</string>
+    <string name="title_section1">Game Mechanics</string>
+    <string name="title_section2">Add A Mechanic</string>
+    <string name="action_about">About</string>
+    <string name="instructions_part1">Step 1: To take a screen shot of the game mechanic, navigate to the part of the game with the mechanic, then press power and volume down.</string>
+    <string name="instructions_part2">Step 2: Fill out the following form to upload and create your entry.</string>
+    <string name="title">Title</string>
+    <string name="description">The description for the game mechanic goes into this box.</string>
+    <string name="submit">Submit Mechanic</string>
+    <string name="upload">Select Screenshot</string>
+    <string name="screenshot">Screenshot to be uploaded.</string>
+    <string name="reload">Reload</string>
+    <string name="imageDescription">Contains a Game Mechanic Screenshot</string>
+    <string name="createdby">Created by Drew Bratcher</string>
+    <string name="visit">Visit mechlibrary.com for more information and features.</string>
+    <string name="about">About</string>
+    <string name="top_voted">Top Voted</string>
+
+</resources>
