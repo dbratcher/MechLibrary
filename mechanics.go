@@ -38,17 +38,19 @@ func handleMechanic(writer http.ResponseWriter, request *http.Request) {
     return
   }
   mech.Votes = fetchMechanicVote(context, key)
+  mech.Id = int64(int_id)
   templates.ExecuteTemplate(writer, "mechanic", mech)
 }
 
 func handleVotedMechanics(writer http.ResponseWriter, request *http.Request) {
   context := appengine.NewContext(request)
+  //context.Errorf("handle vote request %v", request.URL.Query().Get("key"));
   Increment(context, request.URL.Query().Get("key"))
 }
 
 func fetchMechanicVote(context appengine.Context, key *datastore.Key) (int) {
-  vote, _, _ := Count(context,  strconv.FormatInt(key.IntID(), 10))
-  //if update {
+  vote, update, _ := Count(context,  strconv.FormatInt(key.IntID(), 10))
+  if update {
     mechKey := datastore.NewKey(context, "Mechanic", "", key.IntID(), listKey(context, "all_mechanics"))
     mech := new(Mechanic)
     if err := datastore.Get(context, mechKey, mech); err != nil {
@@ -56,7 +58,7 @@ func fetchMechanicVote(context appengine.Context, key *datastore.Key) (int) {
     }
     mech.Votes = vote
     datastore.Put(context, mechKey, mech)
-  //}
+  }
   return vote
 }
 

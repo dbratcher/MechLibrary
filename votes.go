@@ -30,9 +30,11 @@ func memcacheKey(name string) string {
 
 // Count retrieves the value of the named counter.
 func Count(c appengine.Context, name string) (int, bool, error) {
+    //c.Errorf("counting: %v", name)
     total := 0
     mkey := memcacheKey(name)
     if _, err := memcache.JSON.Get(c, mkey, &total); err == nil {
+        //c.Errorf("returning cached: %v", total)
         return total, false, nil
     }
     q := datastore.NewQuery(shardKind).Filter("Name =", name)
@@ -52,11 +54,13 @@ func Count(c appengine.Context, name string) (int, bool, error) {
         Object:     &total,
         Expiration: 60,
     })
+    //c.Errorf("returning not cached: %v", total)
     return total, true, nil
 }
 
 // Increment increments the named counter.
 func Increment(c appengine.Context, name string) error {
+    //c.Errorf("incrementing: %v", name)
     // Get counter config.
     var cfg voteConfig
     ckey := datastore.NewKey(c, configKind, name, 0, nil)
